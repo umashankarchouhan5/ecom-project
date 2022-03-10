@@ -1,29 +1,79 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import beforeEach from "./hooks/beforeEach";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "Home",
+    meta: {
+      title: "Home",
+      auth: true,
+    },
+    component: () => import("../pages/Master"),
+    children: [
+      {
+        path: "/products",
+        name: "Products",
+        meta: {
+          title: "products",
+          auth: true,
+        },
+        component: () => import("../pages/Products"),
+      },
+      {
+        path: "/product/:id",
+        name: "Product",
+        meta: {
+          title: "product",
+          auth: true,
+        },
+        component: () => import("../pages/SingleProduct"),
+      },
+      {
+        path: "/about",
+        name: "About",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      },
+      {
+        path: "/cart",
+        name: "Cart",
+        meta: {
+          title: "cart",
+          auth: true,
+        },
+        component: () => import("../pages/Cart"),
+      },
+    ],
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    path: "/login",
+    name: "Login",
+    meta: {
+      title: "login",
+      auth: true,
+    },
+    component: () => import("../components/Login"),
+  },
+
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import("../pages/NotFound"),
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
+//router.beforeEach(beforeEach);
 
-export default router
+export default router;

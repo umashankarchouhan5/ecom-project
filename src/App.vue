@@ -1,32 +1,55 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
+    
     <router-view/>
-  </div>
+    <Modal
+        v-model="showModal"
+        title="Title"
+        
+        >
+        <p>After you click ok, the dialog box will close in 2 seconds.</p>
+    </Modal>
+    </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+    import {Modal} from "view-design"
 
-nav {
+
+export default {
+  name:"app",
+  components:{
+    Modal
+  },
+  data(){
+   return{
+     showModal:false
+   }
+  },
+  
+  watch:{
+    $route(to){
+      document.title=to.meta.title||"ecommerce"
+        
+    }
+  },
+  
+}
+</script>
+
+<style lang="scss">
+
+
+#nav {
   padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  display: flex;
+  gap:2rem;
+  a{
+    cursor:pointer;
+    text-decoration: none;
+    color: red;
   }
+ 
 }
 </style>
